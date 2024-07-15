@@ -19,6 +19,7 @@ sealed interface SearchResult {
         val login: String,
         val score: String,
         val avatarUrl: String,
+        val htmlUrl: String,
     ) : Parcelable, SearchResult
 
 }

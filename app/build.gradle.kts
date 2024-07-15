@@ -48,29 +48,21 @@ dependencies {
     // Jetpack Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
     // Kotlin coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-
     // Jetpack Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
     // Retrofit + kotlin-serialization + okHttp
     implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
-
     //Glide
     implementation(libs.glide)
-
     //Shimmer
     implementation(libs.shimmer)
-
-    implementation(libs.recycler)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
