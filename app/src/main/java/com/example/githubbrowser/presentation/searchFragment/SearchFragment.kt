@@ -3,11 +3,14 @@ package com.example.githubbrowser.presentation.searchFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -20,6 +23,7 @@ import com.example.githubbrowser.databinding.FragmentSearchBinding
 import com.example.githubbrowser.domain.entity.SearchResult
 import com.example.githubbrowser.presentation.searchFragment.adapter.SearchResultListAdapter
 import com.example.githubbrowser.presentation.utils.getQueryChangeFlow
+import com.example.githubbrowser.presentation.utils.hideKeyboard
 import com.example.githubbrowser.presentation.viewModels.SearchFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,12 +81,23 @@ class SearchFragment : Fragment() {
             .onEach { query ->
                 binding.searchButton.isEnabled = query.length >= 3
             }.launchIn(lifecycleScope)
+        binding.searchEditText.setOnEditorActionListener(object : OnEditorActionListener{
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    binding.searchButton.performClick()
+                    return true
+                }
+                return false
+            }
+
+        })
     }
 
     private fun initAdapter() {
         binding.resultList.adapter = adapter
         binding.searchButton.setOnClickListener {
             viewModel.searchByQuery(binding.searchEditText.text.toString())
+            hideKeyboard()
         }
         adapter.addLoadStateListener { loadState ->
             binding.resultList.isVisible = loadState.source.refresh is LoadState.NotLoading
@@ -94,7 +109,6 @@ class SearchFragment : Fragment() {
             adapter.retry()
         }
         adapter.onClickListener = { searchResult ->
-            Log.d("TESTRESULT", searchResult.toString())
             when (searchResult) {
 
                 is SearchResult.Repository -> {

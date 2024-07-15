@@ -1,7 +1,12 @@
 package com.example.githubbrowser.presentation.utils
 
+import android.app.Activity
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +26,25 @@ fun TextInputEditText.getQueryChangeFlow(): StateFlow<String> {
         }
     )
     return query
+}
+
+fun Context.hideKeyboard(view: View?) {
+    if (view != null) {
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    } else {
+        val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    }
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Activity.hideKeyboard() {
+    hideKeyboard(currentFocus ?: View(this))
 }
 
 fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())

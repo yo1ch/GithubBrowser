@@ -27,6 +27,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Novohudonosor" />
@@ -44,6 +46,10 @@
             android:id="@+id/repo_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textColor="@color/repository_description_text_color"
+            android:textSize="16sp"
+            android:textStyle="normal"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec dui purus. Sed fermentum malesuada velit eu rutrum. Nullam ullamcorper, erat scelerisque porta lacinia, massa velit blandit mi, et faucibus metus felis sed ligula. Suspendisse accumsan libero nulla, laoreet interdum nisi faucibus et." />
 
 
