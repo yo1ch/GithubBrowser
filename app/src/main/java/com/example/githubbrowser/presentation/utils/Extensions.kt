@@ -28,3 +28,12 @@ fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
 fun <T> ArrayDeque<T>.push(element: T) = addLast(element)
 
 fun <T> ArrayDeque<T>.pop() = removeLastOrNull()
+
+fun <T> ArrayDeque<T>.replaceLast(element: T) {
+    if (isNotEmpty()) {
+        removeLast()
+        addLast(element)
+    } else {
+        throw NoSuchElementException("Stack is empty")
+    }
+}

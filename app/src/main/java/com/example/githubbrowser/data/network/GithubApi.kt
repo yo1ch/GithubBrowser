@@ -4,7 +4,6 @@ import com.example.githubbrowser.data.dto.PaginationResult
 import com.example.githubbrowser.data.dto.RepositoryStructureDto
 import com.example.githubbrowser.data.dto.RepositoryDto
 import com.example.githubbrowser.data.dto.UserDto
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -34,7 +33,7 @@ interface GithubApi{
         @Path(OWNER_PATH) owner: String,
         @Path(REPO_PATH) repo: String,
         @Path(PATH_PATH) path: String,
-    ): Response<RepositoryStructureDto>
+    ): RepositoryStructureDto
 
 }
 private const val GITHUB_OBJECT_HEADER = "Accept:application/vnd.github.object+json X-GitHub-Api-Version:2022-11-28"

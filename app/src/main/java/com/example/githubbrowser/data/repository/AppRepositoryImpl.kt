@@ -20,12 +20,11 @@ class AppRepositoryImpl @Inject constructor(
         owner: String,
         repo: String,
         path: String
-    ): RepositoryStructure? {
-        val result = githubApi.getRepositoryStructure(owner, repo, path)
-        return if(result.isSuccessful) {
-            result.body()?.toModel()
-        }  else null
+    ): Result<RepositoryStructure> = kotlin.runCatching {
+        githubApi.getRepositoryStructure(owner, repo, path).toModel()
     }
+
+
 
     override fun getSearchData(query: String): Flow<PagingData<SearchResult>>{
         return Pager(

@@ -14,6 +14,6 @@ interface AppRepository {
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Path("path") path: String,
-    ): RepositoryStructure?
+    ): Result<RepositoryStructure>
 
 }

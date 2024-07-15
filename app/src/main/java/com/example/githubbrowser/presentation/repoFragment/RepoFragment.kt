@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubbrowser.databinding.FragmentRepoBinding
 import com.example.githubbrowser.domain.entity.EntryType
 import com.example.githubbrowser.presentation.repoFragment.adapter.RepoListAdapter
+import com.example.githubbrowser.presentation.utils.ResourceState
 import com.example.githubbrowser.presentation.viewModels.RepoFragmentViewModel
-import com.example.githubbrowser.presentation.webViewFragment.WebViewFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -61,15 +62,30 @@ class RepoFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.repositoryStructure.onEach { repoStructure ->
-            repoStructure?.let {
-                adapter.submitList(it.entries)
-            }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.repositoryStructure
+            .onEach { repoStructure ->
+                when (repoStructure) {
+                    is ResourceState.Content -> {
+                        adapter.submitList(repoStructure.content.entries)
+                        showSuccessState()
+                    }
 
-        viewModel.shouldPopBackStack.onEach { shouldPopBackstack ->
-            if (shouldPopBackstack) findNavController().popBackStack()
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+                    is ResourceState.Error -> {
+                        showErrorState(repoStructure.message.toString())
+                    }
+
+                    is ResourceState.Loading -> {
+                        showLoadingState()
+                    }
+                }
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.shouldPopBackStack
+            .onEach { shouldPopBackstack ->
+                if (shouldPopBackstack) findNavController().popBackStack()
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun setupRecyclerView() {
@@ -89,9 +105,11 @@ class RepoFragment : Fragment() {
         adapter.onClickListener = { entry ->
             when (entry.type) {
                 EntryType.FILE -> showFileInWebView(entry.htmlUrl)
-                EntryType.DIR -> viewModel.fetchRepositoryStructure(path = entry.path)
+                EntryType.DIR -> viewModel.fetchRepositoryStructure(path = entry.path, )
             }
-
+        }
+        binding.error.buttonRetry.setOnClickListener {
+            viewModel.retryRequest()
         }
     }
 
@@ -100,6 +118,30 @@ class RepoFragment : Fragment() {
             .navigate(RepoFragmentDirections.actionRepoFragmentToWebViewFragment(url = url))
     }
 
+    private fun showSuccessState() {
+        with(binding) {
+            error.root.isVisible = false
+            repoStructureList.isVisible = true
+            progressBar.isVisible = false
+        }
+    }
+
+    private fun showLoadingState() {
+        with(binding) {
+            error.root.isVisible = false
+            repoStructureList.isVisible = false
+            progressBar.isVisible = true
+        }
+    }
+
+    private fun showErrorState(errorMessage: String) {
+        with(binding) {
+            error.root.isVisible = true
+            repoStructureList.isVisible = false
+            progressBar.isVisible = false
+            error.errorText.text = errorMessage
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
