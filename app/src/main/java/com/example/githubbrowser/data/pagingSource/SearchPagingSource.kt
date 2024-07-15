@@ -45,6 +45,6 @@ class SearchPagingSource(
     }
 
     companion object {
-        private const val FIRST_PAGE = 0
+        private const val FIRST_PAGE = 1
     }
 }

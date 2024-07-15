@@ -1,4 +1,4 @@
-package com.example.githubbrowser.presentation.viewModels
+package com.example.githubbrowser.presentation.repoFragment
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,6 @@ import com.example.githubbrowser.domain.entity.RepositoryStackItem
 import com.example.githubbrowser.domain.entity.RepositoryStructure
 import com.example.githubbrowser.domain.repository.AppRepository
 import com.example.githubbrowser.domain.usecase.FetchRepositoryStructureUseCase
-import com.example.githubbrowser.presentation.repoFragment.RepoFragmentArgs
 import com.example.githubbrowser.presentation.utils.ResourceState
 import com.example.githubbrowser.presentation.utils.arrayDequeOf
 import com.example.githubbrowser.presentation.utils.pop

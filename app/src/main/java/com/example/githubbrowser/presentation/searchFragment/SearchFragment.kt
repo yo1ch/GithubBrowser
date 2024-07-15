@@ -18,13 +18,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubbrowser.R
 import com.example.githubbrowser.databinding.FragmentSearchBinding
 import com.example.githubbrowser.domain.entity.SearchResult
 import com.example.githubbrowser.presentation.searchFragment.adapter.SearchResultListAdapter
+import com.example.githubbrowser.presentation.utils.VerticalDecorator
 import com.example.githubbrowser.presentation.utils.getQueryChangeFlow
 import com.example.githubbrowser.presentation.utils.hideKeyboard
-import com.example.githubbrowser.presentation.viewModels.SearchFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -97,8 +98,11 @@ class SearchFragment : Fragment() {
         binding.resultList.adapter = adapter
         binding.searchButton.setOnClickListener {
             viewModel.searchByQuery(binding.searchEditText.text.toString())
+            binding.searchEditText.clearFocus()
+            binding.resultList.smoothScrollToPosition(0)
             hideKeyboard()
         }
+        binding.resultList.addItemDecoration(VerticalDecorator(8, 8, 8, 0, 0))
         adapter.addLoadStateListener { loadState ->
             binding.resultList.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading

@@ -1,4 +1,4 @@
-package com.example.githubbrowser.presentation.viewModels
+package com.example.githubbrowser.presentation.searchFragment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

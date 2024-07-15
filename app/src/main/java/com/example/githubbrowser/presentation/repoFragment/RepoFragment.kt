@@ -17,7 +17,6 @@ import com.example.githubbrowser.databinding.FragmentRepoBinding
 import com.example.githubbrowser.domain.entity.EntryType
 import com.example.githubbrowser.presentation.repoFragment.adapter.RepoListAdapter
 import com.example.githubbrowser.presentation.utils.ResourceState
-import com.example.githubbrowser.presentation.viewModels.RepoFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
