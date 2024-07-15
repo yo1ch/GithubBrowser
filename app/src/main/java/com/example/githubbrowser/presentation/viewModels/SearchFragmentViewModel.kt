@@ -15,12 +15,12 @@ class SearchFragmentViewModel @Inject constructor(
     private val repository: AppRepository
 ): ViewModel() {
 
-    private val _state = MutableStateFlow<List<SearchResult>?>(null)
-    val state = _state.asStateFlow()
+    private val _searchResult = MutableStateFlow<List<SearchResult>?>(null)
+    val searchResult = _searchResult.asStateFlow()
 
     fun getSearchData(searchQuery: String){
         viewModelScope.launch {
-            _state.value = repository.getSearchResult(page = 1, size = 10, searchQuery = searchQuery)
+            _searchResult.value = repository.getSearchResult(page = 1, size = 10, searchQuery = searchQuery)
         }
     }
 

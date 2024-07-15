@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.okhttp)
     //Glide
     implementation(libs.glide)
+    //WebKit
+    implementation(libs.webkit)
     //Shimmer
     implementation(libs.shimmer)
     implementation(libs.androidx.core.ktx)

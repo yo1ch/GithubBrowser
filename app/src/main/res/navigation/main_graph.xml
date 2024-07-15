@@ -9,5 +9,33 @@
         android:id="@+id/searchFragment"
         android:name="com.example.githubbrowser.presentation.searchFragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_repoFragment"
+            app:destination="@id/repoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoFragment"
+        android:name="com.example.githubbrowser.presentation.repoFragment.RepoFragment"
+        android:label="fragment_repo"
+        tools:layout="@layout/fragment_repo" >
+        <argument
+            android:name="owner"
+            app:argType="string" />
+        <argument
+            android:name="repo"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_repoFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.githubbrowser.presentation.webViewFragment.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>

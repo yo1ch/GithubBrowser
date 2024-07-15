@@ -1,11 +1,13 @@
 package com.example.githubbrowser.data.network
 
 import com.example.githubbrowser.data.dto.PaginationResult
+import com.example.githubbrowser.data.dto.RepositoryStructureDto
 import com.example.githubbrowser.data.dto.RepositoryDto
 import com.example.githubbrowser.data.dto.UserDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubApi{
@@ -25,6 +27,14 @@ interface GithubApi{
         @Query("per_page") perPage: Int,
         @Query("q") query: String,
     ): Response<PaginationResult<RepositoryDto>>
+
+    @GET("repos/{owner}/{repo}/contents{path}")
+    @Headers("Accept:application/vnd.github.object+json X-GitHub-Api-Version:2022-11-28")
+    suspend fun getRepositoryStructure(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+        @Path("path") path: String,
+    ): Response<RepositoryStructureDto>
 
 }
 

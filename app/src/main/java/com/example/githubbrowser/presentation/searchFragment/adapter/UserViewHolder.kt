@@ -1,10 +1,11 @@
-package com.example.githubbrowser.presentation.searchFragment.listAdapter
+package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.githubbrowser.databinding.UserItemBinding
 import com.example.githubbrowser.domain.entity.SearchResult
+import com.example.githubbrowser.presentation.base.BaseViewHolder
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 

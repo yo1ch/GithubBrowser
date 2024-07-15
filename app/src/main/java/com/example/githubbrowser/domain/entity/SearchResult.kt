@@ -11,6 +11,7 @@ sealed interface SearchResult {
         val name: String,
         val forksCount: String,
         val description: String,
+        val ownerLogin: String,
     ): Parcelable, SearchResult
 
     @Parcelize

@@ -9,4 +9,5 @@ data class RepositoryDto(
     val name: String,
     @SerialName("forks_count")val forksCount: String,
     val description: String?,
+    val owner: RepositoryOwnerDto,
 )

@@ -1,8 +1,9 @@
-package com.example.githubbrowser.presentation.searchFragment.listAdapter
+package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.githubbrowser.domain.entity.SearchResult
+import com.example.githubbrowser.presentation.base.BaseViewHolder
 import javax.inject.Inject
 
 

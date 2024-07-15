@@ -10,10 +10,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.githubbrowser.R
 import com.example.githubbrowser.databinding.FragmentSearchBinding
 import com.example.githubbrowser.domain.entity.SearchResult
-import com.example.githubbrowser.presentation.searchFragment.listAdapter.SearchResultListAdapter
+import com.example.githubbrowser.presentation.searchFragment.adapter.SearchResultListAdapter
 import com.example.githubbrowser.presentation.utils.getQueryChangeFlow
 import com.example.githubbrowser.presentation.viewModels.SearchFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +38,7 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,7 +56,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.state
+        viewModel.searchResult
             .onEach { list ->
                 adapter.submitList(list)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -78,7 +79,10 @@ class SearchFragment : Fragment() {
         adapter.onClickListener = { searchResult ->
             when (searchResult) {
                 is SearchResult.Repository -> {
-
+                    showRepositoryStructure(
+                        repoOwner = searchResult.ownerLogin,
+                        repoName = searchResult.name
+                    )
                 }
 
                 is SearchResult.User -> {
@@ -86,6 +90,17 @@ class SearchFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showRepositoryStructure(
+        repoOwner: String,
+        repoName: String,
+    ) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToRepoFragment(
+                owner = repoOwner, repo = repoName
+            )
+        )
     }
 
     private fun openInBrowser(url: String) {

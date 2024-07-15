@@ -1,4 +1,4 @@
-package com.example.githubbrowser.presentation.searchFragment.listAdapter
+package com.example.githubbrowser.presentation.base
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

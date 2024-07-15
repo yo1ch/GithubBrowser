@@ -1,9 +1,10 @@
-package com.example.githubbrowser.presentation.searchFragment.listAdapter
+package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.githubbrowser.databinding.RepoItemBinding
 import com.example.githubbrowser.domain.entity.SearchResult
+import com.example.githubbrowser.presentation.base.BaseViewHolder
 
 class RepoViewHolder(val binding: RepoItemBinding) : BaseViewHolder<RepoItemBinding>(binding.root) {
 

@@ -1,4 +1,4 @@
-package com.example.githubbrowser.presentation.searchFragment.listAdapter
+package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.githubbrowser.domain.entity.SearchResult
