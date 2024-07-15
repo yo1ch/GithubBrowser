@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.githubbrowser.domain.entity.SearchResult
-import com.example.githubbrowser.domain.repository.AppRepository
+import com.example.githubbrowser.domain.usecase.FetchSearchDataByQueryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class SearchFragmentViewModel @Inject constructor(
-    private val repository: AppRepository,
+    private val fetchSearchDataByQueryUseCase: FetchSearchDataByQueryUseCase,
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow<String?>(null)
@@ -25,7 +25,7 @@ class SearchFragmentViewModel @Inject constructor(
     val test: Flow<PagingData<SearchResult>> = _searchQuery
         .filterNotNull()
         .flatMapLatest { query ->
-            repository.getSearchData(query = query)
+            fetchSearchDataByQueryUseCase(query)
         }.cachedIn(viewModelScope)
 
     fun searchByQuery(searchQuery: String) {

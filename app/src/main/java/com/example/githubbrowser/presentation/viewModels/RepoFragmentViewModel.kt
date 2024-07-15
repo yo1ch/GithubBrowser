@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubbrowser.domain.entity.RepositoryStackItem
 import com.example.githubbrowser.domain.entity.RepositoryStructure
 import com.example.githubbrowser.domain.repository.AppRepository
+import com.example.githubbrowser.domain.usecase.FetchRepositoryStructureUseCase
 import com.example.githubbrowser.presentation.repoFragment.RepoFragmentArgs
 import com.example.githubbrowser.presentation.utils.ResourceState
 import com.example.githubbrowser.presentation.utils.arrayDequeOf
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RepoFragmentViewModel @Inject constructor(
     private val repository: AppRepository,
+    private val fetchRepositoryStructureUseCase: FetchRepositoryStructureUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -73,7 +75,7 @@ class RepoFragmentViewModel @Inject constructor(
     fun retryRequest() {
         viewModelScope.launch {
             currentStack.lastOrNull()?.let { stackItem ->
-                repository.getRepositoryStructure(
+                fetchRepositoryStructureUseCase(
                     owner = args.owner,
                     repo = args.repo,
                     path = stackItem.path
