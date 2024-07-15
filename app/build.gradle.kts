@@ -63,6 +63,12 @@ dependencies {
     implementation(libs.glide)
     //WebKit
     implementation(libs.webkit)
+    //Paging
+    implementation(libs.androidx.paging)
+    //Chucker Interceptor
+    debugImplementation (libs.chuckerDebug)
+    releaseImplementation (libs.chuckerRelease)
+
     //Shimmer
     implementation(libs.shimmer)
     implementation(libs.androidx.core.ktx)

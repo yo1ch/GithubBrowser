@@ -2,14 +2,14 @@ package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubbrowser.databinding.UserItemBinding
 import com.example.githubbrowser.domain.entity.SearchResult
-import com.example.githubbrowser.presentation.base.BaseViewHolder
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 
-class UserViewHolder(val binding: UserItemBinding) : BaseViewHolder<UserItemBinding>(binding.root) {
+class UserViewHolder(val binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: SearchResult.User) {
         bindAvatar(imgUrl = item.avatarUrl)

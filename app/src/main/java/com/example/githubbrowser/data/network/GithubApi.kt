@@ -13,29 +13,35 @@ import retrofit2.http.Query
 interface GithubApi{
 
     @GET("search/users")
-    @Headers("Accept:application/vnd.github+json X-GitHub-Api-Version:2022-11-28")
+    @Headers(GITHUB_HEADER)
     suspend fun getUsers(
-        @Query("page") page: Int,
-        @Query("per_page") perPage: Int,
-        @Query("q") query: String,
-    ): Response<PaginationResult<UserDto>>
+        @Query(PAGE_PARAM) page: Int,
+        @Query(SIZE_PARAM) perPage: Int,
+        @Query(QUERY_PARAM) query: String,
+    ): PaginationResult<UserDto>
 
     @GET("search/repositories")
-    @Headers("Accept:application/vnd.github+json X-GitHub-Api-Version:2022-11-28")
+    @Headers(GITHUB_HEADER)
     suspend fun getRepositories(
-        @Query("page") page: Int,
-        @Query("per_page") perPage: Int,
-        @Query("q") query: String,
-    ): Response<PaginationResult<RepositoryDto>>
+        @Query(PAGE_PARAM) page: Int,
+        @Query(SIZE_PARAM) perPage: Int,
+        @Query(QUERY_PARAM) query: String,
+    ): PaginationResult<RepositoryDto>
 
-    @GET("repos/{owner}/{repo}/contents{path}")
-    @Headers("Accept:application/vnd.github.object+json X-GitHub-Api-Version:2022-11-28")
+    @GET("repos/{$OWNER_PATH}/{$REPO_PATH}/contents{$PATH_PATH}")
+    @Headers(GITHUB_OBJECT_HEADER)
     suspend fun getRepositoryStructure(
-        @Path("owner") owner: String,
-        @Path("repo") repo: String,
-        @Path("path") path: String,
+        @Path(OWNER_PATH) owner: String,
+        @Path(REPO_PATH) repo: String,
+        @Path(PATH_PATH) path: String,
     ): Response<RepositoryStructureDto>
 
 }
-
-
+private const val GITHUB_OBJECT_HEADER = "Accept:application/vnd.github.object+json X-GitHub-Api-Version:2022-11-28"
+private const val GITHUB_HEADER = "Accept:application/vnd.github.object+json X-GitHub-Api-Version:2022-11-28"
+private const val OWNER_PATH = "owner"
+private const val REPO_PATH = "repo"
+private const val PATH_PATH = "path"
+private const val PAGE_PARAM = "page"
+private const val SIZE_PARAM = "per_page"
+private const val QUERY_PARAM = "q"

@@ -1,18 +1,18 @@
 package com.example.githubbrowser.presentation.searchFragment.adapter
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubbrowser.domain.entity.SearchResult
-import com.example.githubbrowser.presentation.base.BaseViewHolder
 import javax.inject.Inject
 
 
 class SearchResultListAdapter @Inject constructor() :
-    ListAdapter<SearchResult, BaseViewHolder<*>>(DiffUtilCallback) {
+    PagingDataAdapter<SearchResult, RecyclerView.ViewHolder>(DiffUtilCallback) {
 
     var onClickListener: ((SearchResult) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.USER.ordinal -> {
                 UserViewHolder.create(parent)
@@ -21,6 +21,7 @@ class SearchResultListAdapter @Inject constructor() :
             ViewType.REPOSITORY.ordinal -> {
                 RepoViewHolder.create(parent)
             }
+
             else -> throw UnsupportedOperationException("Unexpected ViewType")
         }
     }
@@ -34,8 +35,8 @@ class SearchResultListAdapter @Inject constructor() :
     }
 
 
-    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        when(holder){
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
             is UserViewHolder -> {
                 val item = getItem(position) as SearchResult.User
                 holder.bind(item)
@@ -43,6 +44,7 @@ class SearchResultListAdapter @Inject constructor() :
                     onClickListener?.invoke(item)
                 }
             }
+
             is RepoViewHolder -> {
                 val item = getItem(position) as SearchResult.Repository
                 holder.bind(item)
@@ -50,9 +52,11 @@ class SearchResultListAdapter @Inject constructor() :
                     onClickListener?.invoke(item)
                 }
             }
+
             else -> throw UnsupportedOperationException("Unexpected ViewHolder")
         }
     }
+
     private enum class ViewType {
         USER, REPOSITORY
     }

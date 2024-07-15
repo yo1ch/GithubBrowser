@@ -4,4 +4,6 @@
     <string name="search_field_hint">Введите запрос</string>
     <string name="forks_title">Forks</string>
     <string name="browser_not_installed_warning">Browser not installed</string>
+    <string name="try_again_button_title">TRY AGAIN</string>
+    <string name="connection_error_text">Please check your Internet connection</string>
 </resources>

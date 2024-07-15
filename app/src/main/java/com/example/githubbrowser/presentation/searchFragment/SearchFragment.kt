@@ -3,14 +3,18 @@ package com.example.githubbrowser.presentation.searchFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.example.githubbrowser.R
 import com.example.githubbrowser.databinding.FragmentSearchBinding
 import com.example.githubbrowser.domain.entity.SearchResult
@@ -18,11 +22,15 @@ import com.example.githubbrowser.presentation.searchFragment.adapter.SearchResul
 import com.example.githubbrowser.presentation.utils.getQueryChangeFlow
 import com.example.githubbrowser.presentation.viewModels.SearchFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
@@ -45,7 +53,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        initAdapter()
         observeViewModel()
         initListeners()
     }
@@ -56,10 +64,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.searchResult
-            .onEach { list ->
-                adapter.submitList(list)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.test.collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 
     private fun initListeners() {
@@ -68,16 +77,26 @@ class SearchFragment : Fragment() {
             .onEach { query ->
                 binding.searchButton.isEnabled = query.length >= 3
             }.launchIn(lifecycleScope)
-        binding.searchButton.setOnClickListener {
-            viewModel.getSearchData(binding.searchEditText.text.toString())
-        }
-
     }
 
-    private fun setupRecyclerView() {
+    private fun initAdapter() {
         binding.resultList.adapter = adapter
+        binding.searchButton.setOnClickListener {
+            viewModel.searchByQuery(binding.searchEditText.text.toString())
+        }
+        adapter.addLoadStateListener { loadState ->
+            binding.resultList.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            binding.error.root.isVisible = loadState.source.refresh is LoadState.Error
+            handleError(loadState)
+        }
+        binding.error.buttonRetry.setOnClickListener {
+            adapter.retry()
+        }
         adapter.onClickListener = { searchResult ->
+            Log.d("TESTRESULT", searchResult.toString())
             when (searchResult) {
+
                 is SearchResult.Repository -> {
                     showRepositoryStructure(
                         repoOwner = searchResult.ownerLogin,
@@ -89,6 +108,14 @@ class SearchFragment : Fragment() {
                     openInBrowser(searchResult.htmlUrl)
                 }
             }
+        }
+    }
+
+    private fun handleError(loadState: CombinedLoadStates) {
+        val errorState = loadState.source.append as? LoadState.Error
+            ?: loadState.source.prepend as? LoadState.Error
+        errorState?.let {
+            showToast(text = errorState.error.toString())
         }
     }
 

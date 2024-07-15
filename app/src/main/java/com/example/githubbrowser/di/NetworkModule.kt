@@ -1,10 +1,13 @@
 package com.example.githubbrowser.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.githubbrowser.data.network.GithubApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -23,11 +26,23 @@ object NetworkModule {
         retrofit.create(GithubApi::class.java)
 
 
+    @Provides
+    @Singleton
+    fun provideChuckerInterceptor(@ApplicationContext context: Context): ChuckerInterceptor = ChuckerInterceptor.Builder(context)
+        .maxContentLength(250_000L)
+        .redactHeaders("Auth-Token", "Bearer")
+        .alwaysReadResponseBody(true)
+        .createShortcut(true)
+        .build()
+
 
     @Provides
     @Singleton
-    fun provideOkHttp(): OkHttpClient {
+    fun provideOkHttp(
+        chuckerInterceptor: ChuckerInterceptor,
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(chuckerInterceptor)
             .callTimeout(120, TimeUnit.SECONDS)
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
