@@ -63,6 +63,14 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
 
+    //Glide
+    implementation(libs.glide)
+
+    //Shimmer
+    implementation(libs.shimmer)
+
+    implementation(libs.recycler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

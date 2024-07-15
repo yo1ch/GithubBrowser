@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +18,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/user_avatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginEnd="16dp"
@@ -23,7 +27,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/user_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -31,7 +35,7 @@
             tools:text="Novohudonosor" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/user_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end"

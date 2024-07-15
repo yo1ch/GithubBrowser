@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    android:paddingTop="16dp"
+    android:paddingTop="8dp"
     tools:context=".presentation.searchFragment.SearchFragment">
 
 
@@ -34,15 +34,18 @@
             android:hint="@string/search_field_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/result_list"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_width="0dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/user_item"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_field" />
+        app:layout_constraintTop_toBottomOf="@+id/search_field"
+        tools:listitem="@layout/user_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
